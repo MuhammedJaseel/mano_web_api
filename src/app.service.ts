@@ -12,6 +12,14 @@ export class AppService {
     return 'ANOWEB! (0.0.1)';
   }
 
+  async _create(domain: string, ip: string) {
+    const created = await this.logModel.create({
+      domain,
+      ips: [{ ip, count: 1, date: new Date(), updated: new Date() }],
+    });
+    return { id: String(created._id) };
+  }
+
   async updateAccesLog(
     req: Request,
     id: string,
@@ -36,19 +44,15 @@ export class AppService {
       req.headers['x-forwarded-for']?.toString().split(',')[0] ||
       req.socket.remoteAddress;
 
+    if (id === 'new' || !Types.ObjectId.isValid(id))
+      return this._create(domain, ip);
+
     const _id = new Types.ObjectId(id);
 
     const doc =
       id === 'new' ? null : await this.logModel.findOne({ _id, domain }).exec();
 
-    if (!doc) {
-      const created = await this.logModel.create({
-        _id,
-        domain,
-        ips: [{ ip, count: 1, date: new Date(), updated: new Date() }],
-      });
-      return { id: String(created._id) };
-    }
+    if (!doc) return this._create(domain, ip);
 
     const ipEntry = doc.ips.find((entry) => entry.ip === ip);
 
