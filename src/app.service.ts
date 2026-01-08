@@ -38,7 +38,8 @@ export class AppService {
 
     const _id = new Types.ObjectId(id);
 
-    const doc = await this.logModel.findOne({ _id, domain }).exec();
+    const doc =
+      id === 'new' ? null : await this.logModel.findOne({ _id, domain }).exec();
 
     if (!doc) {
       const created = await this.logModel.create({

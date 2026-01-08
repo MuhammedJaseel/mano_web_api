@@ -7,7 +7,7 @@ import { AccesLog, AccesLogSchema } from './app.schema';
 @Module({
   imports: [
     MongooseModule.forRootAsync({
-      useFactory: () => ({ uri: process.env.MONGODB_URI }),
+      useFactory: () => ({ uri: process.env.MONGO_URI }),
     }),
     MongooseModule.forFeature([
       { name: AccesLog.name, schema: AccesLogSchema },
