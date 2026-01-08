@@ -25,27 +25,25 @@ export class AppService {
     id: string,
     domain: string,
   ): Promise<{ id: string }> {
-    switch (domain) {
-      case 'web':
-        break;
-      case 'm.web':
-        break;
-      case 'scan-m.web':
-        break;
-      case 'dapp-m.web':
-        break;
-      case 'poker.web':
-        break;
-      default:
-        throw new Error('Invalid from parameter');
-    }
+    if (!domain) throw new Error('Domain is required');
+    if (typeof domain !== 'string') throw new Error('Invalid domain parameter');
+    console.log(domain);
+    if (
+      domain !== 'web' &&
+      domain !== 'm_web' &&
+      domain !== 'scan-m_web' &&
+      domain !== 'dapp-m_web' &&
+      domain !== 'poker_web'
+    )
+    throw new Error('Invalid domain parameter');
 
     const ip =
-      req.headers['x-forwarded-for']?.toString().split(',')[0] ||
-      req.socket.remoteAddress;
+      req?.headers['x-forwarded-for']?.toString().split(',')[0] ||
+      req?.socket?.remoteAddress;
 
-    if (id === 'new' || !Types.ObjectId.isValid(id))
-      return this._create(domain, ip);
+    if (id === 'new') return this._create(domain, ip);
+
+    if (!Types.ObjectId.isValid(id)) throw new Error('Invalid ID');
 
     const _id = new Types.ObjectId(id);
 

@@ -11,12 +11,12 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('acces-status/:id/:from')
+  @Get('acces-status/:id/:domain')
   accesLog(
     @Req() req: Request,
     @Param('id') id: string,
-    @Param('from') from: string,
+    @Param('domain') domain: string,
   ): Promise<{ id: string }> {
-    return this.appService.updateAccesLog(req, id, from);
+    return this.appService.updateAccesLog(req, id, domain);
   }
 }
