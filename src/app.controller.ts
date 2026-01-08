@@ -1,5 +1,6 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Req } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Request } from 'express';
 
 @Controller()
 export class AppController {
@@ -11,7 +12,11 @@ export class AppController {
   }
 
   @Get('acces-status/:id/:from')
-  accesLog(@Param('id') id: string, @Param('from') from: string): string {
-    return this.appService.updateAccesLog(id, from);
+  accesLog(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Param('from') from: string,
+  ): Promise<{ id: string }> {
+    return this.appService.updateAccesLog(req, id, from);
   }
 }

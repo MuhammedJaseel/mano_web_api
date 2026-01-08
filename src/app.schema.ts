@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class AccesLog {
   @Prop({ type: Array })
-  ip: any[];
+  ips: any[];
 
   @Prop({ type: String })
   domain: string;
