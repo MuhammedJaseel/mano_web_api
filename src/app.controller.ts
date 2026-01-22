@@ -1,11 +1,14 @@
 import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
-import { exec } from 'child_process';
+import { CICDService } from './ci-cd.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly cicdService: CICDService,
+  ) {}
 
   @Get()
   getHello(): string {
@@ -21,14 +24,8 @@ export class AppController {
     return this.appService.updateAccesLog(req, id, domain);
   }
 
-  @Post('/webhook/ci-cd')
-  webhookCICD(@Body() body: any) {
-    exec(`
-       cd /var/www/myapp &&
-       git pull origin main 
-    `);
-    console.log('Web hook called');
-    console.log(body);
-    return 'Deployment started';
+  @Post('/webhook/ci-cd/:app')
+  webhookCICD(@Param('app') app: string, @Body() body: any) {
+    return this.cicdService.deploy(app);
   }
 }

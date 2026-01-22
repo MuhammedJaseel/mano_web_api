@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AccesLog, AccesLogSchema } from './app.schema';
+import { CICDService } from './ci-cd.service';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { AccesLog, AccesLogSchema } from './app.schema';
     ]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CICDService],
 })
 export class AppModule {}
