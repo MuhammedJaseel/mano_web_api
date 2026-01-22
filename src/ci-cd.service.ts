@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 @Injectable()
 export class CICDService {
   constructor() {}
 
-  deploy(app: string): string {
-    console.log(Date() + ' Deploying ' + app);
+  async deploy(app: string): Promise<any> {
+    console.log(new Date() + ' Deploying ' + app);
 
     let cmd = '';
 
@@ -21,21 +24,23 @@ export class CICDService {
         npm ci && npm run build && pm2 restart ts-api
        `;
 
-    exec(cmd, (error, stdout, stderr) => {
-      if (error) {
-        console.error('Error:', error.message);
-        return error.message;
-      }
+    try {
+      const { stdout, stderr } = await execAsync(cmd);
 
       if (stderr) {
-        console.error('Stderr:', stderr);
-        return stderr;
+        throw new HttpException(
+          { error: 'Command error', details: stderr },
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
-
-      console.log('Current dir:', stdout.trim());
-      return stdout.trim();
-    });
-
-    return 'Deployment started';
+      console.log(new Date() + ' Complated ' + app);
+      return { output: stdout.trim() };
+    } catch (err: any) {
+      console.log(new Date() + ' Failed ' + app);
+      throw new HttpException(
+        { error: 'Failed to execute command', details: err.message },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
