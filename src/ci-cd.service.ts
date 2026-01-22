@@ -12,7 +12,7 @@ export class CICDService {
 
     if (app === 'app')
       cmd = `
-        cd /opt/an0/app && git pull origin main &&
+        cd /opt/ano/app && git pull origin main &&
         npm ci && npm run build && pm2 restart app
        `;
 
