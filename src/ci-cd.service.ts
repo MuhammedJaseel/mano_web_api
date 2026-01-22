@@ -36,6 +36,7 @@ export class CICDService {
       console.log(new Date() + ' Complated ' + app);
       return { output: stdout.trim() };
     } catch (err: any) {
+      console.log(err);
       console.log(new Date() + ' Failed ' + app);
       throw new HttpException(
         { error: 'Failed to execute command', details: err.message },
