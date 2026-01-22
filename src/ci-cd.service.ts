@@ -17,7 +17,7 @@ export class CICDService {
        `;
     else if (app === 'ticket-api')
       cmd = `
-        cd /opt/ano/ts/ticket-api && git pull origin main &&
+        cd /opt/ano/ts/ticket_api && git pull origin main &&
         npm ci && npm run build && pm2 restart ts-api
        `;
 
