@@ -15,19 +15,25 @@ export class CICDService {
         cd /opt/ano/app && git pull origin main &&
         npm ci && npm run build && pm2 restart app
        `;
+    else if (app === 'ticket-api')
+      cmd = `
+        cd /opt/ano/tc/ticket-api && git pull origin main &&
+        npm ci && npm run build && pm2 restart ts-api
+       `;
 
     exec(cmd, (error, stdout, stderr) => {
       if (error) {
         console.error('Error:', error.message);
-        return;
+        return error.message;
       }
 
       if (stderr) {
         console.error('Stderr:', stderr);
-        return;
+        return stderr;
       }
 
       console.log('Current dir:', stdout.trim());
+      return stdout.trim();
     });
 
     return 'Deployment started';
