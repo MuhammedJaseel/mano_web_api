@@ -9,7 +9,7 @@ export class AppService {
   constructor(@InjectModel(AccesLog.name) private logModel: Model<AccesLog>) {}
 
   getHello(): string {
-    return 'ANOWEB! (0.0.1)';
+    return 'ANOWEB! (0.0.2)';
   }
 
   async _create(domain: string, ip: string) {
@@ -27,7 +27,7 @@ export class AppService {
   ): Promise<{ id: string }> {
     if (!domain) throw new Error('Domain is required');
     if (typeof domain !== 'string') throw new Error('Invalid domain parameter');
-    console.log(domain);
+
     if (
       domain !== 'web' &&
       domain !== 'm_web' &&
@@ -35,7 +35,7 @@ export class AppService {
       domain !== 'dapp-m_web' &&
       domain !== 'poker_web'
     )
-    throw new Error('Invalid domain parameter');
+      throw new Error('Invalid domain parameter');
 
     const ip =
       req?.headers['x-forwarded-for']?.toString().split(',')[0] ||

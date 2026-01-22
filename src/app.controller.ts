@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Req } from '@nestjs/common';
+import { Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
+import { exec } from 'child_process';
 
 @Controller()
 export class AppController {
@@ -18,5 +19,14 @@ export class AppController {
     @Param('domain') domain: string,
   ): Promise<{ id: string }> {
     return this.appService.updateAccesLog(req, id, domain);
+  }
+
+  @Post('/webhook/ci-cd')
+  webhookCICD() {
+    exec(`
+       cd /var/www/myapp &&
+       git pull origin main 
+    `);
+    return 'Deployment started';
   }
 }
