@@ -9,7 +9,7 @@ export class AppService {
   constructor(@InjectModel(AccesLog.name) private logModel: Model<AccesLog>) {}
 
   getHello(): string {
-    return 'ANOWEB! (0.0.7)';
+    return 'ANOWEB! (0.0.8)';
   }
 
   async _create(domain: string, ip: string) {
