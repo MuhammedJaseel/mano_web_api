@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
 import { exec } from 'child_process';
@@ -22,11 +22,13 @@ export class AppController {
   }
 
   @Post('/webhook/ci-cd')
-  webhookCICD() {
+  webhookCICD(@Body() body: any) {
     exec(`
        cd /var/www/myapp &&
        git pull origin main 
     `);
+    console.log('Web hook called');
+    console.log(body);
     return 'Deployment started';
   }
 }
