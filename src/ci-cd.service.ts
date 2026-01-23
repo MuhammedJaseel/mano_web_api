@@ -7,7 +7,7 @@ export class CICDService {
   constructor() {}
 
   async deploy(app: string): Promise<any> {
-    console.log(Date() + ' Deploying ' + app);
+    console.warn(Date() + ' Deploying ' + app);
 
     let cmd = '';
 
@@ -27,8 +27,10 @@ export class CICDService {
     try {
       const { stdout, stderr } = await execAsync(cmd);
       if (stderr) throw stderr;
+      console.error(Date() + ' Succes ' + app);
       return stdout.trim();
     } catch (err) {
+      console.error(Date() + ' Failed ' + app);
       throw new HttpException(
         { error: 'Failed to deploy', details: err.message },
         HttpStatus.INTERNAL_SERVER_ERROR,
