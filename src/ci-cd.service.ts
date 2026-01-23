@@ -23,7 +23,7 @@ export class CICDService {
   }
 
   async deploy(app: string): Promise<any> {
-    console.log(this.dubaiDateTime() + 'DEPLOYING:' + app);
+    console.log(this.dubaiDateTime(), 'DEPLOYING:', app);
 
     let cmd = '';
 
