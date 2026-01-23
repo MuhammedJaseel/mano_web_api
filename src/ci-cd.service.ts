@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { exec } from 'child_process';
+import { promisify } from 'util';
 
 @Injectable()
 export class CICDService {
   constructor() {}
 
-  deploy(app: string): string {
+  async deploy(app: string): Promise<any> {
     console.log(Date() + ' Deploying ' + app);
 
     let cmd = '';
@@ -21,41 +22,33 @@ export class CICDService {
         npm ci && npm run build && pm2 restart ts-api
        `;
 
-    exec(cmd, (error, stdout, stderr) => {
-      if (error) {
-        console.error('Error:', error.message);
-        return error.message;
-      }
+    const execAsync = promisify(exec);
 
-      if (stderr) {
-        console.error('Stderr:', stderr);
-        return stderr;
-      }
-
-      console.log(Date() + ' Complated ' + app);
-      // console.log('Current dir:', stdout.trim());
+    try {
+      const { stdout, stderr } = await execAsync(cmd);
+      if (stderr) throw stderr;
       return stdout.trim();
-    });
+    } catch (err) {
+      throw new HttpException(
+        { error: 'Failed to deploy', details: err.message },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
-    // try {
-    //   const { stdout, stderr } = await execAsync(cmd);
+    // exec(cmd, (error, stdout, stderr) => {
+    //   if (error) {
+    //     console.error('Error:', error.message);
+    //     return error.message;
+    //   }
 
     //   if (stderr) {
-    //     throw new HttpException(
-    //       { error: 'Command error', details: stderr },
-    //       HttpStatus.INTERNAL_SERVER_ERROR,
-    //     );
+    //     console.error('Stderr:', stderr);
+    //     return stderr;
     //   }
-    //   console.log(new Date() + ' Complated ' + app);
-    //   return { output: stdout.trim() };
-    // } catch (err: any) {
-    //   console.log(new Date() + ' Failed ' + app);
-    //   throw new HttpException(
-    //     { error: 'Failed to execute command', details: err.message },
-    //     HttpStatus.INTERNAL_SERVER_ERROR,
-    //   );
-    // }
 
-    return 'Deployment Complated';
+    //   console.log(Date() + ' Complated ' + app);
+    //   // console.log('Current dir:', stdout.trim());
+    //   return stdout.trim();
+    // });
   }
 }
