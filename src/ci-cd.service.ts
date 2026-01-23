@@ -32,6 +32,16 @@ export class CICDService {
         cd /opt/ano/app && git pull origin main &&
         npm ci && npm run build && pm2 restart app
        `;
+    else if (app === 'rpc1')
+      cmd = `
+        cd /opt/ano/rpc1 && git pull origin main &&
+        npm ci && npm run build && pm2 restart rpc1
+       `;
+    else if (app === 'rpc2')
+      cmd = `
+        cd /opt/ano/rpc2 && git pull origin main &&
+        cargo build --release && pm2 restart rpc2
+       `;
     else if (app === 'ticket-api')
       cmd = `
         cd /opt/ano/ts/ticket_api && git pull origin main &&
