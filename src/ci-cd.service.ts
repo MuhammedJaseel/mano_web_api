@@ -1,13 +1,29 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { exec } from 'child_process';
-import { promisify } from 'util';
 
 @Injectable()
 export class CICDService {
   constructor() {}
 
+  dubaiDateTime() {
+    const now = new Date();
+
+    return now
+      .toLocaleString('en-GB', {
+        timeZone: 'Asia/Dubai',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      })
+      .replace(',', '');
+  }
+
   async deploy(app: string): Promise<any> {
-    console.log(Date() + ' Deploying ' + app);
+    console.log(this.dubaiDateTime() + 'DEPLOYING:' + app);
 
     let cmd = '';
 
@@ -22,16 +38,12 @@ export class CICDService {
         npm ci && npm run build && pm2 restart ts-api
        `;
 
-    const execAsync = promisify(exec);
+    exec(cmd, (error, stdout, stderr) => {
+      if (error) console.warn(this.dubaiDateTime(), 'ERROR:', error);
+      else if (stderr) console.warn(this.dubaiDateTime(), 'STDERR:', stderr);
+      else console.log(this.dubaiDateTime(), 'SUCCES', stdout);
+    });
 
-    try {
-      const { stdout, stderr } = await execAsync(cmd);
-      if (stderr) console.warn(new Date(), 'STDERR:', stderr);
-      console.log(new Date(), 'Success', app);
-      return { success: true, output: stdout.trim() };
-    } catch (err: any) {
-      console.error(new Date(), 'Failed', app, err);
-      return { success: false, error: err.message };
-    }
+    return 'Deployed';
   }
 }
