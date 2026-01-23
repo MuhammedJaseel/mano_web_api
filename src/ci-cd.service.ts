@@ -41,7 +41,7 @@ export class CICDService {
     exec(cmd, (error, stdout, stderr) => {
       if (error) console.warn(this.dubaiDateTime(), 'ERROR:', error);
       else if (stderr) console.warn(this.dubaiDateTime(), 'STDERR:', stderr);
-      else console.log(this.dubaiDateTime(), 'SUCCES', stdout);
+      else console.log(this.dubaiDateTime(), 'SUCCES:', stdout);
     });
 
     return 'Deployed';
