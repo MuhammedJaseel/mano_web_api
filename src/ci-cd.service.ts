@@ -7,7 +7,7 @@ export class CICDService {
   constructor() {}
 
   async deploy(app: string): Promise<any> {
-    console.warn(Date() + ' Deploying ' + app);
+    console.log(Date() + ' Deploying ' + app);
 
     let cmd = '';
 
@@ -26,7 +26,7 @@ export class CICDService {
 
     try {
       const { stdout, stderr } = await execAsync(cmd);
-      if (stderr) throw stderr;
+      if (stderr) return stderr;
       console.error(Date() + ' Succes ' + app);
       return stdout.trim();
     } catch (err) {
