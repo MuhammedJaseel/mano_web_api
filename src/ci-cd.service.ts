@@ -26,32 +26,12 @@ export class CICDService {
 
     try {
       const { stdout, stderr } = await execAsync(cmd);
-      if (stderr) return stderr.toString();
-      console.error(Date() + ' Succes ' + app);
-      return stdout.trim();
-    } catch (err) {
-      console.log(err);
-      console.error(Date() + ' Failed ' + app);
-      throw new HttpException(
-        { error: 'Failed to deploy', details: err.message },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      if (stderr) console.warn(new Date(), 'STDERR:', stderr);
+      console.log(new Date(), 'Success', app);
+      return { success: true, output: stdout.trim() };
+    } catch (err: any) {
+      console.error(new Date(), 'Failed', app, err);
+      return { success: false, error: err.message };
     }
-
-    // exec(cmd, (error, stdout, stderr) => {
-    //   if (error) {
-    //     console.error('Error:', error.message);
-    //     return error.message;
-    //   }
-
-    //   if (stderr) {
-    //     console.error('Stderr:', stderr);
-    //     return stderr;
-    //   }
-
-    //   console.log(Date() + ' Complated ' + app);
-    //   // console.log('Current dir:', stdout.trim());
-    //   return stdout.trim();
-    // });
   }
 }
