@@ -25,7 +25,7 @@ export class AppController {
   }
 
   @Post('/webhook/ci-cd/:app')
-  webhookCICD(@Param('app') app: string, @Body() body: any) {
+  webhookCICD(@Param('app') app: string, @Body() body: any):Promise<any> {
     return this.cicdService.deploy(app);
   }
 }

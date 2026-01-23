@@ -30,6 +30,7 @@ export class CICDService {
       console.error(Date() + ' Succes ' + app);
       return stdout.trim();
     } catch (err) {
+      console.log(err);
       console.error(Date() + ' Failed ' + app);
       throw new HttpException(
         { error: 'Failed to deploy', details: err.message },
