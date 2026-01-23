@@ -26,7 +26,7 @@ export class CICDService {
 
     try {
       const { stdout, stderr } = await execAsync(cmd);
-      if (stderr) return stderr;
+      if (stderr) return stderr.toString();
       console.error(Date() + ' Succes ' + app);
       return stdout.trim();
     } catch (err) {
