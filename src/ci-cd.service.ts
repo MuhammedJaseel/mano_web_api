@@ -35,7 +35,7 @@ export class CICDService {
     else if (app === 'rpc1')
       cmd = `
         cd /opt/ano/rpc1 && git pull origin main &&
-        npm ci && npm run build && pm2 restart rpc1
+        npm ci && pm2 restart rpc1
        `;
     else if (app === 'rpc2')
       cmd = `
