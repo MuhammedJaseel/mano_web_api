@@ -27,7 +27,12 @@ export class CICDService {
 
     let cmd = '';
 
-    if (app === 'app')
+    if (app === 'web')
+      cmd = `
+        cd /opt/ano/ano_web && git pull origin main &&
+        rm -rf /var/www/anolabs.site/* && cp -a /opt/ano/ano_web/. /var/www/anolabs.site/
+       `;
+    else if (app === 'app')
       cmd = `
         cd /opt/ano/app && git pull origin main &&
         npm ci && npm run build && pm2 restart app
