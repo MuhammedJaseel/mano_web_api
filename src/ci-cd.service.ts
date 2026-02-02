@@ -62,6 +62,11 @@ export class CICDService {
         cd /opt/ano/ts/ticket_api && git pull origin main &&
         npm ci && npm run build && pm2 restart ts-api
        `;
+    else if (app === 'scan-be')
+      cmd = `
+        cd /opt/ano/ts/scan_be && git pull origin main &&
+        npm ci && pm2 restart scan-be
+       `;
 
     exec(cmd, (error, stdout, stderr) => {
       if (error) console.warn(this.dubaiDateTime(), 'ERROR:', error);
