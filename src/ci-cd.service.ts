@@ -64,7 +64,7 @@ export class CICDService {
        `;
     else if (app === 'scan-be')
       cmd = `
-        cd /opt/ano/ts/scan_be && git pull origin main &&
+        cd /opt/ano/scan_be && git pull origin main &&
         npm ci && pm2 restart scan-be
        `;
 
