@@ -29,6 +29,7 @@ export class AppService {
     if (typeof domain !== 'string') throw new Error('Invalid domain parameter');
 
     if (
+      domain !== 'me' &&
       domain !== 'web' &&
       domain !== 'm_web' &&
       domain !== 'scan-m_web' &&
