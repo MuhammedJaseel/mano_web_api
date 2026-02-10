@@ -67,6 +67,11 @@ export class CICDService {
         cd /opt/ano/scan_be && git pull origin main &&
         npm ci && pm2 restart scan-be
        `;
+    else if (app === 'voc-web')
+      cmd = `
+        cd /opt/voc/web && git pull origin main &&
+        rm -rf /var/www/vocindia.net/* && cp -a /opt/ano/ano_web/. /var/www/vocindia.net/
+       `;
 
     exec(cmd, (error, stdout, stderr) => {
       if (error) console.warn(this.dubaiDateTime(), 'ERROR:', error);
