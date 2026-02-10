@@ -70,7 +70,7 @@ export class CICDService {
     else if (app === 'voc-web')
       cmd = `
         cd /opt/voc/web && git pull origin main &&
-        rm -rf /var/www/vocindia.net/* && cp -a /opt/ano/ano_web/. /var/www/vocindia.net/
+        rm -rf /var/www/vocindia.net/* && cp -a /opt/ano/voc_web/. /var/www/vocindia.net/
        `;
 
     exec(cmd, (error, stdout, stderr) => {
