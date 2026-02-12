@@ -34,7 +34,8 @@ export class AppService {
       domain !== 'm_web' &&
       domain !== 'scan-m_web' &&
       domain !== 'dapp-m_web' &&
-      domain !== 'poker_web'
+      domain !== 'poker_web' &&
+      domain !== 'voc'
     )
       throw new Error('Invalid domain parameter');
 
