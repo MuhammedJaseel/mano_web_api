@@ -80,9 +80,7 @@ export class AppService {
     if (ipEntry) {
       ipEntry.count += 1;
       ipEntry.updated = new Date();
-      console.log(ipEntry);
-      console.log(doc.ips);
-      console.log(doc);
+      doc.markModified('ips');
     } else {
       doc.ips.push({
         count: 1,
@@ -92,10 +90,7 @@ export class AppService {
       });
     }
 
-    doc.markModified('ips');
-    const updated =  await doc.save();
-    console.log(updated);
-    
+    await doc.save();
     return { id: String(doc._id) };
   }
 }
