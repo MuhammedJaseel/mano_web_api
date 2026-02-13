@@ -13,10 +13,10 @@ export class AppService {
     return 'ANOWEB! (0.0.10)';
   }
 
-  async _create(domain: string, ip: string) {
+  async _create(domain: string, info: any) {
     const created = await this.logModel.create({
       domain,
-      ips: [{ ip, count: 1, date: new Date(), updated: new Date() }],
+      ips: [{ ...info, count: 1, date: new Date(), updated: new Date() }],
     });
     return { id: String(created._id) };
   }
@@ -24,18 +24,17 @@ export class AppService {
   _getDeviceInfo(req: Request) {
     const agent = useragent.parse(req.headers['user-agent']);
 
-    return {
-      ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip,
+    const _ip =
+      req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip;
 
+    return {
+      ip: _ip.toString(),
       browser: agent.toAgent(),
       os: agent.os.toString(),
       device: agent.device.toString(),
-
       platform: agent.os.family,
       version: agent.toVersion(),
-
       userAgent: req.headers['user-agent'],
-
       language: req.headers['accept-language'],
     };
   }
@@ -60,13 +59,12 @@ export class AppService {
     )
       throw new Error('Invalid domain parameter');
 
-    console.log(this._getDeviceInfo(req));
+    const info = this._getDeviceInfo(req);
 
-    const ip =
-      req?.headers['x-forwarded-for']?.toString().split(',')[0] ||
-      req?.socket?.remoteAddress;
+    //   req?.headers['x-forwarded-for']?.toString().split(',')[0] ||
+    //   req?.socket?.remoteAddress;
 
-    if (id === 'new') return this._create(domain, ip);
+    if (id === 'new') return this._create(domain, info);
 
     if (!Types.ObjectId.isValid(id)) throw new Error('Invalid ID');
 
@@ -75,15 +73,20 @@ export class AppService {
     const doc =
       id === 'new' ? null : await this.logModel.findOne({ _id, domain }).exec();
 
-    if (!doc) return this._create(domain, ip);
+    if (!doc) return this._create(domain, info);
 
-    const ipEntry = doc.ips.find((entry) => entry.ip === ip);
+    const ipEntry = doc.ips.find((entry) => entry.ip === info.ip);
 
     if (ipEntry) {
       ipEntry.count += 1;
       ipEntry.updated = new Date();
     } else {
-      doc.ips.push({ ip, count: 1, date: new Date(), updated: new Date() });
+      doc.ips.push({
+        count: 1,
+        ...info,
+        date: new Date(),
+        updated: new Date(),
+      });
     }
 
     await doc.save();
