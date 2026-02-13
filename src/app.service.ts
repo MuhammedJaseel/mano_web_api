@@ -80,6 +80,7 @@ export class AppService {
     if (ipEntry) {
       ipEntry.count += 1;
       ipEntry.updated = new Date();
+      console.log(ipEntry);
     } else {
       doc.ips.push({
         count: 1,
