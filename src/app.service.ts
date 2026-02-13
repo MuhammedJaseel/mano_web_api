@@ -92,6 +92,7 @@ export class AppService {
       });
     }
 
+    doc.markModified('ips');
     const updated =  await doc.save();
     console.log(updated);
     
