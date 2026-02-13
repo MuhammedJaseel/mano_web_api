@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AccesLog } from './app.schema';
 import { Model, Types } from 'mongoose';
+import * as useragent from 'useragent';
 import { Request } from 'express';
 
 @Injectable()
@@ -20,6 +21,25 @@ export class AppService {
     return { id: String(created._id) };
   }
 
+  _getDeviceInfo(req: Request) {
+    const agent = useragent.parse(req.headers['user-agent']);
+
+    return {
+      ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip,
+
+      browser: agent.toAgent(),
+      os: agent.os.toString(),
+      device: agent.device.toString(),
+
+      platform: agent.os.family,
+      version: agent.toVersion(),
+
+      userAgent: req.headers['user-agent'],
+
+      language: req.headers['accept-language'],
+    };
+  }
+
   async updateAccesLog(
     req: Request,
     id: string,
@@ -35,9 +55,12 @@ export class AppService {
       domain !== 'scan-m_web' &&
       domain !== 'dapp-m_web' &&
       domain !== 'poker_web' &&
-      domain !== 'voc'
+      domain !== 'voc' &&
+      domain !== 'others'
     )
       throw new Error('Invalid domain parameter');
+
+    console.log(this._getDeviceInfo(req));
 
     const ip =
       req?.headers['x-forwarded-for']?.toString().split(',')[0] ||
