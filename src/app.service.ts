@@ -92,7 +92,9 @@ export class AppService {
       });
     }
 
-    await doc.save();
+    const updated =  await doc.save();
+    console.log(updated);
+    
     return { id: String(doc._id) };
   }
 }
