@@ -81,6 +81,7 @@ export class AppService {
       ipEntry.count += 1;
       ipEntry.updated = new Date();
       doc.markModified('ips');
+      console.log('Updated', ipEntry);
     } else {
       doc.ips.push({
         count: 1,
