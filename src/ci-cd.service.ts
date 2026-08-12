@@ -31,7 +31,7 @@ export class CICDService {
       cmd = `
         cd /opt/ano/ano_web && git pull origin main &&
         rm -rf /var/www/anolabs.site/* && cp -a /opt/ano/ano_web/. /var/www/anolabs.site/
-       `;
+       `; // HTML app
     else if (app === 'app')
       cmd = `
         cd /opt/ano/app && git pull origin main &&
@@ -81,7 +81,7 @@ export class CICDService {
       cmd = `
         cd /opt/voc/voc_ad && git pull origin main && npm ci && npm run build &&
         rm -rf /var/www/admon.vocindia.net/* && cp -a /opt/voc/voc_ad/dist/. /var/www/admin.vocindia.net/
-       `;
+       `; // Vite APP
 
     exec(cmd, (error, stdout, stderr) => {
       if (error) console.warn(this.dubaiDateTime(), 'ERROR:', error);
@@ -92,3 +92,28 @@ export class CICDService {
     return 'Deployed';
   }
 }
+
+// cd /opt/voc/voc_be && pm2 start dist/main.js --name 'voc-be'
+// cd /opt/ano/ts/ticket_api && pm2 start dist/main.js --name 'ts-api'
+// cd /opt/ano/rpc1 && npm ci && pm2 start src/index.js --name 'rpc1'
+// cd /opt/ano/scan_be && npm ci && pm2 start src/index.js --name 'scan-be'
+// cd /opt/jaseel/me && pm2 start npm --name 'me' -- start
+// cd /opt/ano/mano_web &&  pm2 start npm --name 'web_m' -- start
+// cd /opt/ano/app && pm2 start dist/main.js --name 'app'
+
+
+
+// cd /opt/oplex/qorfin_backend && pm2 start dist/main.js --name "qorfin-backend"
+// cd /opt/oplex/qorfin_backend && git pull && npm ci --force && npm run build && pm2 restart "qorfin-backend"
+
+// cd /opt/oplex/qorfin_web && git pull origin main && npm ci && npm run build
+// rm -rf /var/www/oplex/qorfin.jaseel.cloud/* && cp -a /opt/oplex/qorfin_web/dist/. /var/www/oplex/qorfin.jaseel.cloud/
+
+
+
+// /etc/nginx/sites-available
+
+// sudo nginx -t && sudo systemctl reload nginx
+
+// sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+

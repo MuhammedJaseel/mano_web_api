@@ -2,12 +2,14 @@ import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
 import { CICDService } from './ci-cd.service';
+import { MailService } from './mail.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly cicdService: CICDService,
+    private readonly mailService: MailService,
   ) {}
 
   @Get()
@@ -25,7 +27,28 @@ export class AppController {
   }
 
   @Post('/webhook/ci-cd/:app')
-  webhookCICD(@Param('app') app: string, @Body() body: any):Promise<any> {
+  webhookCICD(@Param('app') app: string, @Body() body: any): Promise<any> {
     return this.cicdService.deploy(app);
+  }
+
+  @Post('yelmas/enquiry')
+  sendMail(
+    @Body()
+    body: {
+      name: string;
+      email: string;
+      phone: string;
+      message: string;
+    },
+  ) {
+    try {
+      this.mailService.sendMail(
+        'jaseelmanamulli@gmail.com',
+        'New Enquiry - Yelmas',
+        '',
+        this.mailService.yelmasTemplate(body),
+      );
+    } catch (error) {}
+    return { success: true };
   }
 }
