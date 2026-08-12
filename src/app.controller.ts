@@ -52,6 +52,6 @@ export class AppController {
         this.mailService.yelmasTemplate(body),
       );
     } catch (error) {}
-    return { success: true };
+    return { success: true, v: '0.0.1' };
   }
 }
