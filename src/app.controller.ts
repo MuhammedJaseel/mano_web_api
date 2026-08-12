@@ -3,6 +3,7 @@ import { AppService } from './app.service';
 import { Request } from 'express';
 import { CICDService } from './ci-cd.service';
 import { MailService } from './mail.service';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller()
 export class AppController {
@@ -31,6 +32,8 @@ export class AppController {
     return this.cicdService.deploy(app);
   }
 
+  // @SkipThrottle()
+  @Throttle({ default: { limit: 6, ttl: 60000 } })
   @Post('yelmas/enquiry')
   sendMail(
     @Body()
