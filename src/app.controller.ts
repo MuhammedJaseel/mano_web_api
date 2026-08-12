@@ -1,9 +1,18 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
 import { CICDService } from './ci-cd.service';
 import { MailService } from './mail.service';
 import { Throttle } from '@nestjs/throttler';
+import { CorsInterceptor } from './cors.interceptor';
 
 @Controller()
 export class AppController {
@@ -33,8 +42,9 @@ export class AppController {
   }
 
   // @SkipThrottle()
-  @Throttle({ default: { limit: 6, ttl: 60000 } })
   @Post('yelmas/enquiry')
+  @Throttle({ default: { limit: 6, ttl: 60000 } })
+  @UseInterceptors(new CorsInterceptor('https://yelman.ae'))
   sendMail(
     @Body()
     body: {
@@ -52,6 +62,6 @@ export class AppController {
         this.mailService.yelmasTemplate(body),
       );
     } catch (error) {}
-    return { success: true, v: '0.0.1' };
+    return { success: true, v: '0.0.2' };
   }
 }
