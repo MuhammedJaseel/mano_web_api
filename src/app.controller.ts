@@ -44,7 +44,7 @@ export class AppController {
   // @SkipThrottle()
   @Post('yelmas/enquiry')
   @Throttle({ default: { limit: 6, ttl: 60000 } })
-  @UseInterceptors(new CorsInterceptor('https://yelman.ae'))
+  @UseInterceptors(new CorsInterceptor('https://yelmas.ae'))
   sendMail(
     @Body()
     body: {
