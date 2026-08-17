@@ -61,6 +61,12 @@ export class AppController {
         '',
         this.mailService.yelmasTemplate(body),
       );
+      this.mailService.sendMail(
+        'yelmaspropertiesllc@gmail.com',
+        'New Enquiry - Yelmas',
+        '',
+        this.mailService.yelmasTemplate(body),
+      );
     } catch (error) {}
     return { success: true, v: '0.0.2' };
   }
