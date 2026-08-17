@@ -41,7 +41,7 @@ export class MailService implements OnModuleInit {
               <div class="value"><a href="tel:${data.phone}">${data.phone}</a></div>
         
               <div class="label">Message</div>
-              <div class="msg-box">${data.message}</div>
+              <div class="msg-box">${data.note}</div>
             </div>
             <div class="footer">
               Submitted via Website Contact Form
