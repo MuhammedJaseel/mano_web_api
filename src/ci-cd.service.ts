@@ -115,5 +115,7 @@ export class CICDService {
 
 // sudo nginx -t && sudo systemctl reload nginx
 
-// sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+// sudo certbot --nginx -d qorfin.anolabs.site -d qorfin-api.anolabs.site
+
+// sudo ln -s /etc/nginx/sites-available/qorfin /etc/nginx/sites-enabled/qorfin
 
