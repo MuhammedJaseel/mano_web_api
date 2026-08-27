@@ -54,7 +54,7 @@ export class MailService implements OnModuleInit {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.zoho.com',
+      host: 'smtp.gmail.com',
       port: 465,
       secure: true, // true for 465, false for 587
       auth: {
