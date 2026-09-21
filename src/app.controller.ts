@@ -51,6 +51,14 @@ export class AppController {
       name: string;
       email: string;
       phone: string;
+      nationality: string;
+      budget: string;
+      furnishingStatus: string;
+      tenantType: string;
+      parkingRequired: string;
+      paymentSchedule: string;
+      preferredLocation: string;
+      movingDate: string;
       message: string;
     },
   ) {

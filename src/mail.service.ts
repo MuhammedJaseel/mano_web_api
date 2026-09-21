@@ -39,6 +39,30 @@ export class MailService implements OnModuleInit {
         
               <div class="label">Phone Number</div>
               <div class="value"><a href="tel:${data.phone}">${data.phone}</a></div>
+
+              <div class="label">Nationality</div>
+              <div class="value">${data.nationality}</div>
+
+              <div class="label">Budget</div>
+              <div class="value">${data.budget}</div>
+
+              <div class="label">Furnishing Status</div>
+              <div class="value">${data.furnishingStatus}</div>
+
+              <div class="label">Tenant Type</div>
+              <div class="value">${data.tenantType}</div>
+
+              <div class="label">Parking Required</div>
+              <div class="value">${data.parkingRequired}</div>
+
+              <div class="label">Payment Schedule</div>
+              <div class="value">${data.paymentSchedule}</div>
+
+              <div class="label">Preferred Location</div>
+              <div class="value">${data.preferredLocation}</div>
+
+              <div class="label">Moving Date</div>
+              <div class="value">${data.movingDate}</div>
         
               <div class="label">Message</div>
               <div class="msg-box">${data.note}</div>
