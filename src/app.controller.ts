@@ -69,12 +69,7 @@ export class AppController {
         '',
         this.mailService.yelmasTemplate(body),
       );
-      this.mailService.sendMail(
-        'yelmaspropertiesllc@gmail.com',
-        'New Enquiry - Yelmas',
-        '',
-        this.mailService.yelmasTemplate(body),
-      );
+
 this.mailService.sendMail(
         'info@yelmas.ae',
         'New Enquiry - Yelmas',
